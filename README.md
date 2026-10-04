@@ -10,9 +10,17 @@
 
 ## 資料與教師填報
 
-GitHub Pages 是靜態網站。本網站顯示 `public/data/platform.json` 的公開資料快照，**不是即時資料庫**。目前尚無實際量測紀錄，顯示待量測；介面示範模式全部為虛構，不能作為三校成果。
+網站直接讀取 Google 試算表的兩個已發布CSV分頁，每60秒重新讀取，無需更新JSON或重新部署來更新量測。Google發布更新可能延遲數分鐘。尚無實際紀錄時顯示待量測；示範模式全為虛構，不代表三校成效。
 
-教師填報連回原本的受權限管理平台。填報後，須將經核對且適合公開的學校／班級彙總更新至 JSON，再提交到 main，由 GitHub Actions 自動重新發布。不得放入學生姓名、健康資料、教師帳號、權限名單或憑證。請同步更新 syncedAt；records 與 actions 的格式參考 src/model.ts。
+共用填報試算表：https://docs.google.com/spreadsheets/d/1NF5RyZT49ZMj9FrEKcWSyWZND6-aJyNsYVWtVXkR6FA/edit
+
+教師工作台提供「量測紀錄」與「行動紀錄」入口；教師須由管理者透過Google共用取得編輯權限。原始紀錄維持受限分享，僅發布「公開量測」「公開行動」兩個分頁。填報後先核對，再把公開狀態設為「已核對」，公式才會輸出至公開資料。
+
+測量使用 date、schoolId、cohort、phase、participants、plateG、unservedG、inedibleG、version、updatedAt。網站會檢查必填、非負重量、有效日期、正整數人數、學校代碼與重複紀錄；連線／格式錯誤會顯示提示，不把缺漏當成零。公開量測不輸出菜色或教師備註。
+
+已預留300筆；延伸資料時同步延伸Google公式、驗證與保護範圍。新增學校時更新學校清單、下拉選項與 src/model.ts 的 CORE_SCHOOLS。修改舊紀錄直接更新原列，選「撤回」停止公開。
+
+只放學校、班級彙總，不填學生姓名、健康資料、教師帳號或聯絡方式。請勿把整份試算表設定為公開編輯。
 
 ## 本機開發與部署
 
