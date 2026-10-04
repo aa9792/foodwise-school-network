@@ -1,0 +1,15 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+const source=(await fs.readFile('src/daily-menus.tsx','utf8')).replace("'./model'","'./model.mjs'").replace("'./sheets-data'","'./sheets-data.mjs'");
+await fs.mkdir('.test-build',{recursive:true});
+await fs.writeFile('.test-build/daily-menus.mjs',ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText);
+const {parseMenus}=await import('../.test-build/daily-menus.mjs');
+const header='date,schoolId,staple,main,sides,soup,fruit,updatedAt\n';
+const row='2026-10-04,changxing,白飯,蒸魚,"高麗菜,豆腐",蔬菜湯,,\n';
+assert.equal(parseMenus(header).length,0);
+assert.equal(parseMenus(header+row)[0].sides,'高麗菜,豆腐');
+assert.throws(()=>parseMenus(header+row+row),/重複/);
+assert.throws(()=>parseMenus(header+row.replace('changxing','unknown')),/學校/);
+assert.throws(()=>parseMenus(header+row.replace('2026-10-04','2026-02-30')),/日期/);
+console.log('Daily menu parsing, blank data, quoted dishes and duplicate validation passed.');
