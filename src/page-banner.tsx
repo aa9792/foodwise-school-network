@@ -1,0 +1,11 @@
+import {ChartNoAxesCombined,Heart,BookOpen,ClipboardCheck,Globe,Lightbulb,Trophy,Leaf,ArrowRight} from 'lucide-react';
+const themes={
+ observe:{title:'剩食觀測站',caption:'記錄每一餐，看見三校的改變。',label:'一起看見改變',icon:ChartNoAxesCombined,tone:'blue',tags:['共同量測','自己的基線','三校共學'],link:'/foodwise-school-network/teacher',cta:'登錄今日資料'},
+ actions:{title:'共同行動',caption:'少一點浪費，多一點理解與合作。',label:'讓善意在校園發芽',icon:Heart,tone:'green',tags:['傾聽需求','友善盛餐','分享發現'],link:'/foodwise-school-network/teacher',cta:'分享學校行動'},
+ resources:{title:'教案工具箱',caption:'一份教案，把惜食帶進更多校園。',label:'12節課・6個共學模組',icon:BookOpen,tone:'yellow',tags:['國小3–6年級','每節40分鐘','三校同模組'],link:'/foodwise-school-network/resources/lesson-plan.pdf',cta:'下載完整教案'},
+ teacher:{title:'教師工作台',caption:'把今天的真實紀錄，變成大家的學習。',label:'一起記錄・一起前進',icon:ClipboardCheck,tone:'green',tags:['核對量測','發布行動','共學夥伴'],link:'/foodwise-school-network/observatory',cta:'查看三校儀表板'},
+ about:{title:'我們的使命',caption:'從一餐開始，讓永續被看見。',label:'從三校出發・連結更多善意',icon:Globe,tone:'green',tags:['珍惜食物','友善地球','共同實踐'],link:'/foodwise-school-network/actions',cta:'看看夥伴的行動'},
+ knowledge:{title:'剩食小知識',caption:'相同的尺，才看得見變化。',label:'小知識・大發現',icon:Lightbulb,tone:'yellow',tags:['分清剩食','誠實量測','理解數據'],link:'/foodwise-school-network/observatory',cta:'前往剩食觀測站'},
+ champions:{title:'小小惜食家',caption:'小小行動，大大改變！',label:'今天也一起珍惜每一口',icon:Trophy,tone:'orange',tags:['觀察','合作','分享'],link:'/foodwise-school-network/actions',cta:'看看大家的行動'}
+};
+export function PageBanner({page}:{page:string}){const t=themes[page as keyof typeof themes]||themes.about;const Icon=t.icon;return <section className={`page-banner tone-${t.tone}`} aria-label={`${t.title}介紹`}><div className="page-banner-copy"><a className="page-breadcrumb" href="/foodwise-school-network/">首頁 / {t.title}</a><span className="page-kicker"><Leaf size={16}/>{t.label}</span><h1>{t.title}</h1><p>{t.caption}</p><div className="page-topic-tags">{t.tags.map(tag=><span key={tag}>{tag}</span>)}</div><a className="page-banner-link" href={t.link}>{t.cta}<ArrowRight size={17}/></a></div><div className="page-banner-art" aria-hidden="true"><span className="art-spark spark-one">✦</span><span className="art-spark spark-two">✧</span><div className="page-icon-tile"><Icon strokeWidth={1.7}/></div><div className="page-art-caption"><Leaf size={18}/>小小行動，大大改變</div></div></section>;}
